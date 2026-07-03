@@ -25,3 +25,5 @@ node_modules/
 # === Прочее ===
 .DS_Store
 Thumbs.db
+tfplan
+.claude/

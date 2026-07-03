@@ -33,7 +33,7 @@ node --version
 
 echo "=== 3/7. Клонируем репозиторий в $APP_DIR ==="
 if [ ! -d "$APP_DIR" ]; then
-  sudo git clone "$REPO_URL" "$APP_DIR"
+  sudo git clone -b main "$REPO_URL" "$APP_DIR"
   # Папка должна принадлежать deploy, чтобы CI/CD мог делать git pull
   sudo chown -R "$APP_USER:$APP_USER" "$APP_DIR"
 fi
