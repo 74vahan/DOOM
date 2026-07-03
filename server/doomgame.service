@@ -1,0 +1,28 @@
+# ============================================================
+# doomgame.service — systemd-юнит.
+# Благодаря ему приложение:
+#   - запускается автоматически при старте сервера
+#   - перезапускается само, если упало
+#   - перезапускается командой: sudo systemctl restart doomgame
+# Файл кладётся в /etc/systemd/system/ (setup.sh делает это сам).
+# ============================================================
+
+[Unit]
+Description=DOOM browser game backend (Node.js)
+# Стартуем после того, как поднялись сеть и MySQL
+After=network.target mysql.service
+
+[Service]
+Type=simple
+# От какого пользователя работает процесс (не root!)
+User=deploy
+WorkingDirectory=/opt/doomgame/backend
+# Переменные окружения (пароль БД и т.д.) — из .env на сервере
+EnvironmentFile=/opt/doomgame/backend/.env
+ExecStart=/usr/bin/node server.js
+# Если процесс упал — перезапустить через 3 секунды
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

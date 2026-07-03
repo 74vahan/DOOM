@@ -1,0 +1,27 @@
+# === Секреты — НИКОГДА не должны попасть в git ===
+
+# Ключ service account от Google Cloud (JSON)
+*.json
+!package.json
+!package-lock.json
+
+# Реальные значения переменных Terraform (project_id и т.д.)
+*.tfvars
+!terraform.tfvars.example
+
+# Файлы окружения с паролями БД
+.env
+
+# === Служебные файлы Terraform ===
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+
+# === Node.js ===
+node_modules/
+
+# === Прочее ===
+.DS_Store
+Thumbs.db

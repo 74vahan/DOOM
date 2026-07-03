@@ -1,0 +1,43 @@
+# ============================================================
+# deploy.yml — автодеплой через GitHub Actions.
+#
+# Как это работает:
+#   git push в main  ->  GitHub запускает этот workflow  ->
+#   он заходит на сервер по SSH  ->  git pull + npm install +
+#   перезапуск сервиса. Руками ничего делать не нужно.
+#
+# Секреты (Settings -> Secrets and variables -> Actions):
+#   SERVER_IP        — публичный IP сервера (из terraform output)
+#   SSH_USER         — deploy
+#   SSH_PRIVATE_KEY  — ПРИВАТНЫЙ ssh-ключ (весь файл целиком)
+# ============================================================
+
+name: Deploy to GCP
+
+on:
+  push:
+    branches: [main]   # срабатывает только на пуш/мердж в main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /opt/doomgame
+            # Забираем свежий код (жёстко приводим к состоянию main,
+            # чтобы локальные изменения на сервере не мешали)
+            git fetch origin main
+            git reset --hard origin/main
+            # Обновляем зависимости бэкенда
+            cd backend
+            npm ci --omit=dev
+            # Перезапускаем приложение (разрешено без пароля через sudoers)
+            sudo systemctl restart doomgame
+            echo "Деплой завершён успешно"

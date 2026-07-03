@@ -1,0 +1,24 @@
+# ============================================================
+# ПРИМЕР файла с реальными значениями переменных.
+# 1. Скопируй: terraform.tfvars.example -> terraform.tfvars
+# 2. Впиши свои значения.
+# terraform.tfvars добавлен в .gitignore и в git НЕ попадёт.
+# ============================================================
+
+# ID твоего проекта в GCP (смотри в консоли: https://console.cloud.google.com)
+project_id = "my-project-id-123456"
+
+# Регион и зона (Франкфурт — близко и недорого)
+region = "europe-west3"
+zone   = "europe-west3-a"
+
+# Тип машины: e2-small — рекомендую; e2-micro — дешевле, но впритык
+machine_type = "e2-small"
+
+# Пользователь для SSH и путь к твоему ПУБЛИЧНОМУ ключу (.pub!)
+ssh_user            = "deploy"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+
+# Путь к JSON-ключу service account.
+# Оставь "" если используешь gcloud CLI (рекомендуется новичкам).
+credentials_file = ""
