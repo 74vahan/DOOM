@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS doomgame.scores (
   INDEX idx_score (score DESC)                 -- индекс для быстрого топ-10
 );
 
+-- Таблица игроков (авторизация).
+-- Пароль хранится только как bcrypt-хеш, возраст — для проверки 18+.
+CREATE TABLE IF NOT EXISTS doomgame.users (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  username      VARCHAR(16)  NOT NULL UNIQUE,
+  password_hash VARCHAR(60)  NOT NULL,
+  age           INT          NOT NULL,
+  created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Отдельный пользователь ТОЛЬКО для этой базы.
 -- Приложение не должно ходить в MySQL под root!
 -- Плейсхолдер __DB_PASSWORD__ заменяет setup.sh.

@@ -33,6 +33,7 @@ const Weapon = {
     this.ammo--;
     this.cooldown = CONFIG.WEAPON_COOLDOWN;
     this.flash = 0.09;
+    Music.sfx('shoot');
 
     // Куда долетит луч, если врагов нет — до этой стены
     const wall = Raycaster.castRay(Player.x, Player.y, Player.angle);
@@ -49,8 +50,10 @@ const Weapon = {
 
       // Угол между взглядом и направлением на врага.
       // Чем ближе враг, тем шире он "виден" — atan(радиус/дистанция).
+      // Радиус берём из типа врага: в барона попасть проще, чем в импа.
+      const radius = CONFIG.ENEMY_TYPES[e.type].radius;
       const rel = Math.abs(normAngle(Math.atan2(dy, dx) - Player.angle));
-      const hitCone = Math.atan((CONFIG.ENEMY_RADIUS + 0.12) / dist);
+      const hitCone = Math.atan((radius + 0.12) / dist);
       if (rel < hitCone && dist < targetDist) {
         target = e;
         targetDist = dist;

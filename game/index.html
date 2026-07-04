@@ -15,17 +15,32 @@
 
     <p class="hint">
       WASD — движение &nbsp;|&nbsp; стрелки / мышь — поворот &nbsp;|&nbsp;
-      ПРОБЕЛ / клик — выстрел &nbsp;|&nbsp; кликни по экрану для захвата мыши
+      ПРОБЕЛ / клик — выстрел &nbsp;|&nbsp; M — звук вкл/выкл
     </p>
 
-    <!-- Оверлей конца игры: ввод имени и таблица рекордов -->
+    <!-- Экран входа: игра начнётся только после авторизации -->
+    <div id="auth-overlay" class="overlay">
+      <h2>КТО ИДЁТ В АД?</h2>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-mode="login">Вход</button>
+        <button class="auth-tab" data-mode="register">Регистрация</button>
+      </div>
+      <div class="auth-form">
+        <input id="auth-name" maxlength="16" placeholder="Имя бойца" autocomplete="username">
+        <input id="auth-password" type="password" maxlength="64" placeholder="Пароль" autocomplete="current-password">
+        <div id="age-row" style="display:none">
+          <input id="auth-age" type="number" min="5" max="120" placeholder="Возраст (18+)">
+        </div>
+        <p id="auth-error" class="auth-error"></p>
+        <button id="auth-submit">В бой!</button>
+        <p class="auth-note">Игра 18+. Возраст и имя сохраняются в базе данных.</p>
+      </div>
+    </div>
+
+    <!-- Оверлей конца игры: счёт и таблица рекордов -->
     <div id="overlay" class="overlay hidden">
       <h2 id="overlay-title">ТЫ ПОГИБ</h2>
       <p id="overlay-score">Счёт: 0</p>
-      <div id="name-form">
-        <input id="player-name" maxlength="16" placeholder="Твоё имя" autocomplete="off">
-        <button id="save-score">Сохранить рекорд</button>
-      </div>
       <div id="highscores"></div>
       <button id="restart">Играть снова (Enter)</button>
     </div>
@@ -37,6 +52,7 @@
   <script src="js/player.js"></script>
   <script src="js/input.js"></script>
   <script src="js/raycaster.js"></script>
+  <script src="js/music.js"></script>
   <script src="js/enemies.js"></script>
   <script src="js/weapon.js"></script>
   <script src="js/renderer.js"></script>

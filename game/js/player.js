@@ -10,13 +10,20 @@ const Player = {
   alive: true,
   damageFlash: 0,  // таймер красной вспышки при получении урона
 
+  // Полный сброс (новый забег): здоровье восстанавливается
   reset() {
+    this.hp = CONFIG.PLAYER_HP;
+    this.alive = true;
+    this.respawn();
+  },
+
+  // Поставить на старт комнаты. HP НЕ трогаем —
+  // здоровье переносится из комнаты в комнату
+  respawn() {
     const s = GameMap.playerStart;
     this.x = s.x;
     this.y = s.y;
     this.angle = s.angle;
-    this.hp = CONFIG.PLAYER_HP;
-    this.alive = true;
     this.damageFlash = 0;
   },
 
@@ -58,6 +65,7 @@ const Player = {
     if (!this.alive) return;
     this.hp -= amount;
     this.damageFlash = 0.6; // красная вспышка на экране
+    Music.sfx('playerHurt');
     if (this.hp <= 0) {
       this.hp = 0;
       this.alive = false;

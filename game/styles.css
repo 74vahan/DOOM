@@ -92,6 +92,46 @@ body {
 }
 .overlay button:hover { background: #8a2a1e; }
 
+/* --- Экран входа --- */
+.auth-tabs { display: flex; gap: 6px; }
+
+.auth-tab {
+  background: #1a120e;
+  border: 2px solid #5a3a2a;
+  color: #8a7a6a;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 6px 18px;
+  cursor: pointer;
+}
+.auth-tab.active {
+  background: #6a1f16;
+  border-color: #b8352a;
+  color: #f0e0c0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 280px;
+}
+.auth-form input { width: 100%; }
+#age-row { display: flex; }
+
+.auth-error {
+  color: #ff5040;
+  font-size: 14px;
+  min-height: 18px;
+  text-align: center;
+}
+
+.auth-note {
+  color: #6a5a4a;
+  font-size: 12px;
+  text-align: center;
+}
+
 /* Таблица рекордов */
 #highscores { min-width: 280px; text-align: center; }
 #highscores h3 { color: #c8a050; margin-bottom: 6px; letter-spacing: 2px; }

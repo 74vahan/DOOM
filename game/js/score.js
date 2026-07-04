@@ -1,10 +1,39 @@
 // ============================================================
-// score.js — общение с бэкендом: сохранить рекорд, получить топ.
-// Бэкенд (backend/server.js) хранит рекорды в MySQL.
+// score.js — общение с бэкендом: вход/регистрация и рекорды.
+// Бэкенд (backend/server.js) хранит всё в MySQL.
 // ============================================================
 
+// --- Авторизация ---
+const AuthAPI = {
+  // Регистрация нового игрока (имя, пароль, возраст).
+  // Игроки младше 18 регистрируются в базе, но играть не могут.
+  async register(name, password, age) {
+    return this._post('/api/register', { name, password, age });
+  },
+
+  async login(name, password) {
+    return this._post('/api/login', { name, password });
+  },
+
+  async _post(url, body) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) return { ok: false, error: data.error || `Ошибка ${res.status}` };
+      return { ok: true, name: data.name };
+    } catch (err) {
+      console.error('Auth error:', err.message);
+      return { ok: false, error: 'Сервер недоступен' };
+    }
+  },
+};
+
+// --- Рекорды ---
 const ScoreAPI = {
-  // Отправить рекорд на сервер
   async submit(name, score) {
     try {
       const res = await fetch('/api/scores', {
@@ -13,7 +42,6 @@ const ScoreAPI = {
         body: JSON.stringify({ name, score }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      UI.hideNameForm();
       this.loadTop(); // обновить таблицу — вдруг ты в топе!
     } catch (err) {
       console.error('Не удалось сохранить рекорд:', err.message);
@@ -21,7 +49,6 @@ const ScoreAPI = {
     }
   },
 
-  // Загрузить топ-10 и показать таблицу
   async loadTop() {
     const box = document.getElementById('highscores');
     try {
@@ -34,9 +61,8 @@ const ScoreAPI = {
         return;
       }
 
-      // Собираем таблицу топ-10.
       // textContent (а не innerHTML) — чтобы имя игрока
-      // не могло вставить в страницу вредный HTML.
+      // не могло вставить в страницу вредный HTML
       const table = document.createElement('table');
       rows.forEach((r, i) => {
         const tr = document.createElement('tr');
@@ -59,7 +85,6 @@ const ScoreAPI = {
   },
 
   showMessage(text) {
-    const box = document.getElementById('highscores');
-    box.textContent = text;
+    document.getElementById('highscores').textContent = text;
   },
 };

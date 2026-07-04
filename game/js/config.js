@@ -24,36 +24,53 @@ const CONFIG = {
   WEAPON_DAMAGE: 45,      // урон в упор
   WEAPON_RANGE: 12,       // дальше урона нет
   WEAPON_COOLDOWN: 0.55,  // секунд между выстрелами
-  START_AMMO: 24,
+  START_AMMO: 30,
 
-  // Враги
-  ENEMY_HP: 100,
-  ENEMY_SPEED: 1.5,
-  ENEMY_RADIUS: 0.3,
-  ENEMY_AGGRO_DIST: 7,    // с какого расстояния замечает игрока
-  ENEMY_ATTACK_DIST: 1.1, // дистанция удара
-  ENEMY_DAMAGE_MIN: 6,
-  ENEMY_DAMAGE_MAX: 14,
-  ENEMY_ATTACK_COOLDOWN: 1.0,
+  // Типы врагов. На карте: E=имп, F=пинки, C=какодемон, B=барон
+  ENEMY_TYPES: {
+    imp: {
+      hp: 60,  speed: 1.5, radius: 0.30, worldH: 0.75, yOff: 0,
+      aggro: 7,  attackDist: 1.1, dmgMin: 6,  dmgMax: 14, cooldown: 1.0,
+      score: 100, ranged: false,
+    },
+    pinky: {  // быстрый и кусачий, только ближний бой
+      hp: 100, speed: 2.7, radius: 0.34, worldH: 0.7,  yOff: 0,
+      aggro: 8,  attackDist: 1.1, dmgMin: 10, dmgMax: 20, cooldown: 0.9,
+      score: 150, ranged: false,
+    },
+    caco: {   // летает и плюётся огненными шарами
+      hp: 120, speed: 1.0, radius: 0.38, worldH: 0.85, yOff: 0.3,
+      aggro: 10, attackDist: 8,   dmgMin: 12, dmgMax: 18, cooldown: 2.2,
+      score: 200, ranged: true,  projSpeed: 4.0, projColor: '#ff8020',
+    },
+    baron: {  // танк: много HP, больно бьёт и стреляет
+      hp: 300, speed: 1.3, radius: 0.36, worldH: 0.95, yOff: 0,
+      aggro: 10, attackDist: 1.3, dmgMin: 15, dmgMax: 25, cooldown: 1.2,
+      score: 400, ranged: true,  projSpeed: 4.5, projColor: '#40ff40',
+      rangedCooldown: 2.5, rangedDmg: 20,
+    },
+  },
+  PROJECTILE_RADIUS: 0.3,   // попадание шара по игроку
 
   // Очки
-  SCORE_KILL: 100,
   SCORE_PICKUP: 25,
 
   // Подбираемые предметы
   MEDKIT_HEAL: 25,
-  AMMO_PACK: 8,
+  AMMO_PACK: 10,
   PICKUP_RADIUS: 0.5,
 
   // Палитра стен: тип клетки -> [основной цвет, тёмная сторона]
-  // Тёмная сторона делает углы объёмными
+  // 1 — серый металл (техбаза), 2 — зелёный металл (токсичный отсек),
+  // 3 — ржавый кирпич (тоннели), 4 — красный кирпич (ад), 9 — дверь
   WALL_COLORS: {
-    1: ['#8a2f20', '#5e1f14'],  // красный кирпич
-    2: ['#6b4a2a', '#48311b'],  // коричневый камень
-    3: ['#5a5a5a', '#3c3c3c'],  // серая скала
-    4: ['#4a5a3a', '#303c26'],  // зелёный металл
+    1: ['#6e6e72', '#4a4a4e'],
+    2: ['#4a6a4a', '#324832'],
+    3: ['#7a5030', '#523620'],
+    4: ['#8a2f20', '#5e1f14'],
+    9: ['#9a8a3a', '#6e6228'],  // запертая дверь — жёлтый металл
   },
-  CEILING_COLOR: '#241410',
-  FLOOR_COLOR: '#3a2a1e',
+  CEILING_COLOR: '#1c1c20',
+  FLOOR_COLOR: '#33302a',
   FOG_DIST: 14,   // дальше этого расстояния всё уходит в темноту
 };

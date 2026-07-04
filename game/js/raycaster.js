@@ -53,8 +53,14 @@ const Raycaster = {
     }
 
     // Длина луча = расстояние до границы, на которой стоит стена
-    const dist = (side === 0 ? distX - deltaX : distY - deltaY);
-    return { dist: Math.max(dist, 0.0001), side, tile };
+    const dist = Math.max(side === 0 ? distX - deltaX : distY - deltaY, 0.0001);
+
+    // wallX — в каком месте клетки луч ударил в стену (0..1).
+    // Нужно, чтобы рисовать на стенах "швы" между панелями.
+    let wallX = side === 0 ? py + dist * dirY : px + dist * dirX;
+    wallX -= Math.floor(wallX);
+
+    return { dist, side, tile, wallX };
   },
 
   // Пустить лучи для ВСЕХ столбцов экрана.
@@ -73,6 +79,7 @@ const Raycaster = {
         perpDist: ray.dist * Math.cos(rel),
         side: ray.side,
         tile: ray.tile,
+        wallX: ray.wallX,
       };
     }
     return result;
